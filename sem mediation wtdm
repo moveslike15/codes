@@ -116,11 +116,12 @@ fit.sem <- sem(SEM.model, data = base)
 #bootstrap
 fit.sem <- sem(SEM.model, data = base, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
 summary(fit.sem, fit.measures=TRUE)
+
 # 모형적합도
 fitMeasures(fit.1l, fit.measures = "all", output = "text")
 
-semPaths(fit.sem, what = "std", layout = "tree2", title = TRUE, style = "lisrel", fade = FALSE, edge.label.cex = 1)
-
+#그래프 그리기
+semPaths(fit.2l, what = "std", layout = "circle2", rotation = 1, , sizeLat = 2, style = "lisrel", fade = FALSE, edge.label.cex = 0.5, structural = TRUE)
 
 # dv=공감 sem
 
