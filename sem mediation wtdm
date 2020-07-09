@@ -1,3 +1,8 @@
+# r 회귀분석
+
+fit <- lm(wtdm ~ nv + vv,data = base) 
+summary(fit)
+
 # one - step mediation
 
 SEM.model <- '
@@ -9,6 +14,7 @@ SEM.model <- '
 	malfmist=~malmis
 	emp=~ecm+ptm+pdm
 	#dona=~wtdm
+	#dona=~wtdql
 	dona=~wtd1+wtd2+wtdql
 	
 	#regressions
@@ -44,22 +50,26 @@ SEM.model <- '
 	vvempie := d4*h
 
 	# total effect = XY + (XM*MY)
-	#할줄 몰라서 못함
+	nvte := a + c1*e + c2*f + c3*g + c4*h 
+	vvte := b + d1*e + d2*f + d3*g + d4*h 
 	'
 
 # two - step mediation
 
-SEM.model <- '
+2ldona <- '
 	nonv=~nv
 	verb=~vv
 	emo=~pl+ok
 	hide=~hid
 	malfmist=~malmis
 	emp=~ecm+ptm+pdm
-	dona=~wtdm
+	dona=~wtd1+wtd2+wtdql
 
 	#direct effect XY
 	dona ~ a*nonv + b*verb
+		#직접효과 선언
+	nvde := a
+	vvde := b
 	
 	#mediator1 = XM, MY 
 		#XXXMMM
@@ -93,16 +103,67 @@ SEM.model <- '
 	vvmalfie := d3*g
 
 	# XM1*M1M2*M2Y 전부 *로 연결되는 것인지도 확실치 않음
-	nvempie2 := c1*c2*c3*i*j*k*h
-	vvempie2 := d1*d2*d3*i*j*k*h
+	nvempie2 := ((c1*i)+(c2*j)+(c3*k))*h
+	vvempie2 := ((d1*i)+(d2*j)+(d3*k))*h
 
 	# total effect = XY + (XM*MY)
-	# 할 줄 몰라서 못함
+	nvte := a + c1*e + c2*f + c3*g + ((c1*i)+(c2*j)+(c3*k))*h
+	vvte := b + d1*e + d2*f + d3*g + ((d1*i)+(d2*j)+(d3*k))*h
 	'
 
 
-
-fit.sem <- sem(SEM.model, data = the name of the dataset)
-summary(fit.sem)
+fit.sem <- sem(SEM.model, data = base)
+#bootstrap
+fit.sem <- sem(SEM.model, data = base, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
+summary(fit.sem, fit.measures=TRUE)
+# 모형적합도
+lavaan:::print.fit.measures(fitMeasures(fit.sem))
 
 semPaths(fit.sem, what = "std", layout = "tree2", title = TRUE, style = "lisrel", fade = FALSE, edge.label.cex = 1)
+
+
+# dv=공감 sem
+
+
+SEM.model <- '
+	# 변수 =~ item 연결
+	nonv=~nv
+	verb=~vv
+	emo=~pl+ok
+	hide=~hid
+	malfmist=~malmis
+	emp=~ecm+ptm+pdm
+	
+	#regressions
+	# 나중에 직.간접 효과 계산을 위해서 변수 앞에 기울기를 a, b 등으로 지정해 주어야 함
+	# direct effect XY
+	emp ~ a*nonv + b*verb
+	
+	#직접효과 선언
+	nvde := a
+	vvde := b
+
+	#mediator = XM, MY 
+		#XXXMMM
+	emo ~ c1*nonv + d1*verb
+
+	hide ~ c2*nonv + d2*verb
+
+	malfmist ~ c3*nonv + d3*verb
+
+	
+
+		#MMMYYY
+	emp ~ e*emo + f*hide + g*malfmist
+
+	# indirect effect =  XM*MY
+	nvemoie := c1*e
+	vvemoie := d1*e
+	nvhideie := c2*f
+	vvhideie := d2*f
+	nvmalfie := c3*g
+	vvmalfie := d3*g
+
+	# total effect = XY + (XM*MY)
+	#할줄 몰라서 못함
+	'
