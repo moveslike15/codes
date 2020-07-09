@@ -117,7 +117,7 @@ fit.sem <- sem(SEM.model, data = base)
 fit.sem <- sem(SEM.model, data = base, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
 summary(fit.sem, fit.measures=TRUE)
 # 모형적합도
-lavaan:::print.fit.measures(fitMeasures(fit.sem))
+fitMeasures(fit.1l, fit.measures = "all", output = "text")
 
 semPaths(fit.sem, what = "std", layout = "tree2", title = TRUE, style = "lisrel", fade = FALSE, edge.label.cex = 1)
 
