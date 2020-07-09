@@ -1,0 +1,107 @@
+# one - step mediation
+
+SEM.model <- '
+	# 변수 =~ item 연결
+	nonv=~nv
+	verb=~vv
+	emo=~pl+ok
+	hide=~hid
+	malfmist=~malmis
+	emp=~ecm+ptm+pdm
+	dona=~wtdm
+
+	#regressions
+	# 나중에 직.간접 효과 계산을 위해서 변수 앞에 기울기를 a, b 등으로 지정해 주어야 함
+	# direct effect XY
+	dona ~ a*nonv + b*verb
+	
+	#직접효과 선언
+	nvde := a
+	vvde := b
+
+	#mediator = XM, MY 
+		#XXXMMM
+	emo ~ c1*nonv + d1*verb
+
+	hide ~ c2*nonv + d2*verb
+
+	malfmist ~ c3*nonv + d3*verb
+
+	emp ~ c4*nonv + d4*verb
+
+		#MMMYYY
+	dona ~ e*emo + f*hide + g*malfmist + h*emp
+
+	# indirect effect =  XM*MY
+	nvemoie := c1*e
+	vvemoie := d1*e
+	nvhideie := c2*f
+	vvhideie := d2*f
+	nvmalfie := c3*g
+	vvmalfie := d3*g
+	nvempie := c4*h
+	vvempie := d4*h
+
+	# total effect = XY + (XM*MY)
+	#할줄 몰라서 못함
+	'
+
+# two - step mediation
+
+SEM.model <- '
+	nonv=~nv
+	verb=~vv
+	emo=~pl+ok
+	hide=~hid
+	malfmist=~malmis
+	emp=~ecm+ptm+pdm
+	dona=~wtdm
+
+	#direct effect XY
+	dona ~ a*nonv + b*verb
+	
+	#mediator1 = XM, MY 
+		#XXXMMM
+	emo ~ c1*nonv + d1*verb
+
+	hide ~ c2*nonv + d2*verb
+
+	malfmist ~ c3*nonv + d3*verb
+
+		#MMMYYY
+	dona ~ e*emo + f*hide + g*malfmist
+		
+	#mediator2			
+
+		#XXXMMM
+	
+	emp ~ c4*nonv + d4*verb
+
+	emp ~ i*emo + j*hide + k*malfmist
+
+		#MMMYYY
+	dona ~ h*emp
+
+
+	# indirect effect =  XM*MY
+	nvemoie := c1*e
+	vvemoie := d1*e
+	nvhideie := c2*f
+	vvhideie := d2*f
+	nvmalfie := c3*g
+	vvmalfie := d3*g
+
+	# XM1*M1M2*M2Y 전부 *로 연결되는 것인지도 확실치 않음
+	nvempie2 := c1*c2*c3*i*j*k*h
+	vvempie2 := d1*d2*d3*i*j*k*h
+
+	# total effect = XY + (XM*MY)
+	# 할 줄 몰라서 못함
+	'
+
+
+
+fit.sem <- sem(SEM.model, data = the name of the dataset)
+summary(fit.sem)
+
+semPaths(fit.sem, what = "std", layout = "tree2", title = TRUE, style = "lisrel", fade = FALSE, edge.label.cex = 1)
