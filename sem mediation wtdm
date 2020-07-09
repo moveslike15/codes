@@ -112,7 +112,7 @@ SEM.model <- '
 	'
 
 
-fit.sem <- sem(SEM.model, data = base)
+fit.sem <- sem(SEM.model, data = base, std.lv=TRUE)
 #bootstrap
 fit.sem <- sem(SEM.model, data = base, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
 summary(fit.sem, fit.measures=TRUE)
@@ -171,26 +171,63 @@ SEM.model <- '
 
 
 
-#확인적 요인분석
-# 모델 입력
-CFA.2l <- '
+# 상관계수를 보고 수정한 two - step mediation
+
+sem.2ldonamod <- '
 	nonv=~nv
 	verb=~vv
 	emo=~pl+ok
 	hide=~hid
 	malfmist=~malmis
 	emp=~ecm+ptm+pdm
-	dona=~wtd1+wtd2+wtdql
+	dona=~wtd1+wtd2
+
+	#direct effect XY
+	dona ~ a*nonv + b*verb
+		#직접효과 선언
+	nvde := a
+	vvde := b
+	
+	#mediator1 = XM, MY 
+		#XXXMMM
+	emo ~ c1*nonv + d1*verb
+
+	hide ~ c2*nonv + d2*verb
+
+	malfmist ~ c3*nonv + d3*verb
+
+		#MMMYYY
+	dona ~ e*emo + f*hide + g*malfmist
+		
+	#mediator2			
+
+		#XXXMMM
+	
+	emp ~ c4*nonv + d4*verb
+
+	emp ~ i*emo + j*hide + k*malfmist
+
+		#MMMYYY
+	dona ~ h*emp
+
+
+	# indirect effect =  XM*MY
+	nvemoie := c1*e
+	vvemoie := d1*e
+	nvhideie := c2*f
+	vvhideie := d2*f
+	nvmalfie := c3*g
+	vvmalfie := d3*g
+
+	# XM1*M1M2*M2Y 전부 *로 연결되는 것인지도 확실치 않음
+	nvempie2 := ((c1*i)+(c2*j)+(c3*k))*h
+	vvempie2 := ((d1*i)+(d2*j)+(d3*k))*h
+
+	# total effect = XY + (XM*MY)
+	nvte := a + c1*e + c2*f + c3*g + ((c1*i)+(c2*j)+(c3*k))*h
+	vvte := b + d1*e + d2*f + d3*g + ((d1*i)+(d2*j)+(d3*k))*h
 	'
-# 모델에 데이터 입력
-c2f <- cfa(CFA.2l, data = base, se="robust.sem", std.lv = TRUE)
 
-#크론바흐 알파 등
-reliability(c2f)
 
-# 적재값( > .6이어야 함) from 한국어 lavaan 논문
-subset(standardizedSolution(c2f), standardizedSolution(c2f)[2]== "=~")
 
-# 비표준화계수
-subset(parameterEstimates(c2f), parameterEstimates(c2f)[2]== "=~") 
 
