@@ -168,3 +168,29 @@ SEM.model <- '
 	# total effect = XY + (XM*MY)
 	#할줄 몰라서 못함
 	'
+
+
+
+#확인적 요인분석
+# 모델 입력
+CFA.2l <- '
+	nonv=~nv
+	verb=~vv
+	emo=~pl+ok
+	hide=~hid
+	malfmist=~malmis
+	emp=~ecm+ptm+pdm
+	dona=~wtd1+wtd2+wtdql
+	'
+# 모델에 데이터 입력
+c2f <- cfa(CFA.2l, data = base, se="robust.sem", std.lv = TRUE)
+
+#크론바흐 알파 등
+reliability(c2f)
+
+# 적재값( > .6이어야 함) from 한국어 lavaan 논문
+subset(standardizedSolution(c2f), standardizedSolution(c2f)[2]== "=~")
+
+# 비표준화계수
+subset(parameterEstimates(c2f), parameterEstimates(c2f)[2]== "=~") 
+
