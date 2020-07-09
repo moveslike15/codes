@@ -8,8 +8,9 @@ SEM.model <- '
 	hide=~hid
 	malfmist=~malmis
 	emp=~ecm+ptm+pdm
-	dona=~wtdm
-
+	#dona=~wtdm
+	dona=~wtd1+wtd2+wtdql
+	
 	#regressions
 	# 나중에 직.간접 효과 계산을 위해서 변수 앞에 기울기를 a, b 등으로 지정해 주어야 함
 	# direct effect XY
