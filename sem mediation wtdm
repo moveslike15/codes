@@ -115,7 +115,7 @@ SEM.model <- '
 fit.sem <- sem(SEM.model, data = base, std.lv=TRUE)
 #bootstrap
 fit.sem <- sem(SEM.model, data = base, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
-summary(fit.sem, fit.measures=TRUE)
+summary(fit.sem, fit.measures=TRUE, standardized = TRUE)
 
 # 모형적합도
 fitMeasures(fit.1l, fit.measures = "all", output = "text")
