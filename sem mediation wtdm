@@ -211,7 +211,18 @@ sem.2ldonamod <- '
 	dona ~ h*emp
 
 
-	# indirect effect =  XM*MY
+	# indirect effect =  XM*MY 
+	
+	# 모델 구체화 후 검토 대상 확정
+	emoempdona := i*h
+	nvemoemp := c1*i
+	vvemoemp := d1*i
+	nvemoempdona := c1*i*h
+	vvemoempdona := d1*i*h
+	nvmalfdona := c3*g
+	vvmalfdona := d3*g
+	
+	# 그냥 해본 것들
 	nvemoie := c1*e
 	vvemoie := d1*e
 	nvhideie := c2*f
@@ -227,7 +238,5 @@ sem.2ldonamod <- '
 	nvte := a + c1*e + c2*f + c3*g + ((c1*i)+(c2*j)+(c3*k))*h
 	vvte := b + d1*e + d2*f + d3*g + ((d1*i)+(d2*j)+(d3*k))*h
 	'
-
-
 
 
