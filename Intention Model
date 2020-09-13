@@ -6,7 +6,7 @@ summary(fit)
 # two - step mediation
 # hide와 malmisr을 합쳐서 intention 변수로
 sem.dvisdonate <- '
-  NVB=~nvr
+	NVB=~nvr
 	VB=~vvr
 	EMO=~pl+ok
 	INTENTION=~hid+malmisr
