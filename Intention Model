@@ -1,0 +1,87 @@
+# r 회귀분석
+
+fit <- lm(wtdm ~ nv + vv,data = dataset200913) 
+summary(fit)
+
+# two - step mediation
+# hide와 malmisr을 합쳐서 intention 변수로
+sem.dvisdonate <- '
+  NVB=~nvr
+	VB=~vvr
+	EMO=~pl+ok
+	INTENTION=~hid+malmisr
+	EMPATHY=~ecm+ptm+pdm
+	DONATE=~wtd1+wtd2+wtdql
+
+	#direct effect X ~ Y
+	DONATE ~ a*NVB + b*VB
+  
+	#직접효과b 계수 선언하기 de=direct effect
+	NVBde := a
+	VBde := b
+	
+	# 1st order mediation = X ~ M1, M1 ~ Y 
+
+  # X ~ M1
+	EMO ~ c1*NVB + d1*VB
+	INTENTION ~ c2*NVB + d2*VB
+
+	# M1 ~ Y
+	DONATE ~ e*EMO + f*INTENTION
+		
+	# 2nd order mediator = X ~ M2, M1 ~ M2, M2 ~ Y			
+
+	# X ~ M2
+	EMPATHY ~ c3*NVB + d3*VB
+
+  # M1 ~ M2
+	EMPATHY ~ g*EMO + h*INTENTION
+
+	# M2 ~ Y
+	DONATE ~ i*EMPATHY
+
+
+	# indirect effect
+  
+  # XtoM1 * M1toM2
+	NVBtoEMOtoEMPATHY := c1*g
+  VBtoEMOtoEMPATHY := d1*g
+  NVBtoINTENTIONtoEMPATHY := c2*h
+	VBtoINTENTIONtoEMPATHY := d2*h
+  
+  # XtoM1 * M1toY
+	NVBtoEMOtoDONATE := c1*e
+  VBtoEMOtoDONATE := d1*e
+  NVBtoINTENTIONtoDONATE := c2*f
+	VBtoINTENTIONtoDONATE	 := d2*f
+  
+  # XtoM2 * M2toY
+  NVBtoEMPATHYtoDONATE := c3*i
+  VBtoEMPATHYtoDONATE := d3*i
+  
+  # M1toM2 * M2toY
+  EMOtoEMPATHYtoDONATE := g*i
+  INTENTIONtoEMPATHYtoDONATE := h*i
+  
+  # XtoM1 * M1toM2 * M2toY
+  NVBtoEMOtoEMPATHYtoDONATE := c1*g*i
+  VBtoEMOtoEMPATHYtoDONATE := d1*g*i
+  NVBtoINTENTIONtoEMPATHYtoDONATE := c2*h*i
+  VBtoINTENTIONtoEMPATHYtoDONATE := d2*h*i
+  
+  # total effect = XY + (XM*MY)
+	NVBte := a + c1*e + c2*f + c3*i + c1*g*i + c2*h*i
+	VBte := b + d1*e + d2*f + d3*i + d1*g*i + d2*h*i
+	'
+
+#bootstrap
+fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
+summary(fit.sem, fit.measures=TRUE, standardized = TRUE)
+
+# 모형적합도
+fitMeasures(fit.sem, fit.measures = "all", output = "text")
+
+#그래프 그리기
+semPaths(fit.sem, what = "std", layout = "circle2", rotation = 1, , sizeLat = 2, style = "lisrel", fade = FALSE, edge.label.cex = 0.5, structural = TRUE)
+
+
