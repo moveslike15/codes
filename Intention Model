@@ -73,9 +73,13 @@ sem.dvisdonate <- '
 	NVBte := a + c1*e + c2*f + c3*i + c1*g*i + c2*h*i
 	VBte := b + d1*e + d2*f + d3*i + d1*g*i + d2*h*i
 	'
+# without Bootstrap
+fit.sem <- sem(sem.dvisdonate, data = base, std.lv=TRUE)
 
-#bootstrap
+# bootstrap
 fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
+
+# SEM 통계량
 summary(fit.sem, fit.measures=TRUE, standardized = TRUE)
 
 # 모형적합도
