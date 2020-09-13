@@ -22,7 +22,7 @@ sem.dvisdonate <- '
 	
 	# 1st order mediation = X ~ M1, M1 ~ Y 
 
-  # X ~ M1
+	# X ~ M1
 	EMO ~ c1*NVB + d1*VB
 	INTENTION ~ c2*NVB + d2*VB
 
@@ -34,7 +34,7 @@ sem.dvisdonate <- '
 	# X ~ M2
 	EMPATHY ~ c3*NVB + d3*VB
 
-  # M1 ~ M2
+	# M1 ~ M2
 	EMPATHY ~ g*EMO + h*INTENTION
 
 	# M2 ~ Y
@@ -43,33 +43,33 @@ sem.dvisdonate <- '
 
 	# indirect effect
   
-  # XtoM1 * M1toM2
+	# XtoM1 * M1toM2
 	NVBtoEMOtoEMPATHY := c1*g
-  VBtoEMOtoEMPATHY := d1*g
-  NVBtoINTENTIONtoEMPATHY := c2*h
+	VBtoEMOtoEMPATHY := d1*g
+	NVBtoINTENTIONtoEMPATHY := c2*h
 	VBtoINTENTIONtoEMPATHY := d2*h
   
-  # XtoM1 * M1toY
+	# XtoM1 * M1toY
 	NVBtoEMOtoDONATE := c1*e
-  VBtoEMOtoDONATE := d1*e
-  NVBtoINTENTIONtoDONATE := c2*f
+	VBtoEMOtoDONATE := d1*e
+	NVBtoINTENTIONtoDONATE := c2*f
 	VBtoINTENTIONtoDONATE	 := d2*f
   
-  # XtoM2 * M2toY
-  NVBtoEMPATHYtoDONATE := c3*i
-  VBtoEMPATHYtoDONATE := d3*i
+	# XtoM2 * M2toY
+	NVBtoEMPATHYtoDONATE := c3*i
+ 	VBtoEMPATHYtoDONATE := d3*i
   
-  # M1toM2 * M2toY
-  EMOtoEMPATHYtoDONATE := g*i
-  INTENTIONtoEMPATHYtoDONATE := h*i
+	# M1toM2 * M2toY
+	EMOtoEMPATHYtoDONATE := g*i
+	INTENTIONtoEMPATHYtoDONATE := h*i
   
-  # XtoM1 * M1toM2 * M2toY
-  NVBtoEMOtoEMPATHYtoDONATE := c1*g*i
-  VBtoEMOtoEMPATHYtoDONATE := d1*g*i
-  NVBtoINTENTIONtoEMPATHYtoDONATE := c2*h*i
-  VBtoINTENTIONtoEMPATHYtoDONATE := d2*h*i
+	# XtoM1 * M1toM2 * M2toY
+	NVBtoEMOtoEMPATHYtoDONATE := c1*g*i
+	VBtoEMOtoEMPATHYtoDONATE := d1*g*i
+	NVBtoINTENTIONtoEMPATHYtoDONATE := c2*h*i
+	VBtoINTENTIONtoEMPATHYtoDONATE := d2*h*i
   
-  # total effect = XY + (XM*MY)
+	# total effect = XY + (XM*MY)
 	NVBte := a + c1*e + c2*f + c3*i + c1*g*i + c2*h*i
 	VBte := b + d1*e + d2*f + d3*i + d1*g*i + d2*h*i
 	'
