@@ -1,0 +1,39 @@
+import pandas as pd
+import pingouin as pg
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Data Loading
+df = pd.read_csv('pracword_regv4.csv')
+
+
+# Multiple Linear Regression
+lm = pg.linear_regression(df[['apply','moral','ethics','principle']], df['trustv2'])
+print(lm.round(3))
+
+# 다변수 상관관계 테이블 with P value stars
+rcorr = df[['based','apply','ethics','principle','moral','trustv2']].rcorr(stars=False)
+
+print(rcorr.round(3))
+
+# 반복측정 상관관계
+rmc1 = pg.rm_corr(data=df, x='moral', y='trustv2', subject='subid', tail='one-sided')
+rmc2 = pg.rm_corr(data=df, x='ethics', y='trustv2', subject='subid', tail='one-sided')
+rmc3 = pg.rm_corr(data=df, x='based', y='trustv2', subject='subid', tail='one-sided')
+rmc4 = pg.rm_corr(data=df, x='apply', y='trustv2', subject='subid', tail='one-sided')
+rmc5 = pg.rm_corr(data=df, x='principle', y='trustv2', subject='subid', tail='one-sided')
+print(rmc1.round(3))
+print(rmc2.round(3))
+print(rmc3.round(3))
+print(rmc4.round(3))
+print(rmc5.round(3))
+
+# 그래프
+sns.set(style='darkgrid', font_scale=1.2)
+graph = pg.plot_rm_corr(data=df, x='ai', y='trust', subject='subid', legend=True,
+                    kwargs_facetgrid=dict(height=4.5, aspect=1.5,
+                                          palette='Spectral'))
+
+
+plt.show()
+print(graph)
