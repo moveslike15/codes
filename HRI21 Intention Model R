@@ -5,6 +5,7 @@ summary(fit)
 
 # two - step mediation
 # hide와 malmisr을 합쳐서 intention 변수로
+# why i tried this model was, by converging hide and malmis, to reduce 2 latent variable to 1 and simplify the hypothesis only about intention. but it failed because lavaan SEM operates only when measuring variables for the same one latent variable have correlation between them.
 sem.dvisdonate <- '
 	NVB=~nvr
 	VB=~vvr
