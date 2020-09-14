@@ -74,7 +74,7 @@ sem.dvisdonate <- '
 	VBte := b + d1*e + d2*f + d3*i + d1*g*i + d2*h*i
 	'
 # without Bootstrap
-fit.sem <- sem(sem.dvisdonate, data = base, std.lv=TRUE)
+fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv=TRUE)
 
 # bootstrap
 fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
