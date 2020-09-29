@@ -6,73 +6,85 @@ summary(fit)
 # two - step mediation
 # hide와 malmisr을 합쳐서 intention 변수로
 # why i tried this model was, by converging hide and malmis, to reduce 2 latent variable to 1 and simplify the hypothesis only about intention. but it failed because lavaan SEM operates only when measuring variables for the same one latent variable have correlation between them.
-sem.dvisdonate <- '
-	NVB=~nvr
-	VB=~vvr
-	EMO=~pl+ok
-	INTENTION=~hid+malmisr
-	EMPATHY=~ecm+ptm+pdm
-	DONATE=~wtd1+wtd2+wtdql
+sem.model <- '
+	Nonv=~nv
+	Verb=~vv
+	Emo=~pl+ok
+	Inten=~hid
+	Malf=~malmis
+	Emp=~ecm+ptm+pdm
+	Behav=~wtd1+wtd2+wtdql
 
 	#direct effect X ~ Y
-	DONATE ~ a*NVB + b*VB
+	Behav ~ a*Nonv + b*Verb
   
 	#직접효과b 계수 선언하기 de=direct effect
-	NVBde := a
-	VBde := b
+	#NVBde := a
+	#VBde := b
 	
 	# 1st order mediation = X ~ M1, M1 ~ Y 
 
 	# X ~ M1
-	EMO ~ c1*NVB + d1*VB
-	INTENTION ~ c2*NVB + d2*VB
+	Emo ~ c1*Nonv + d1*Verb
+	Inten ~ c2*Nonv + d2*Verb
+	Malf ~ c3*Nonv + d3*Verb
 
 	# M1 ~ Y
-	DONATE ~ e*EMO + f*INTENTION
+	Behav ~ e*Emo + f*Inten + g*Malf
 		
 	# 2nd order mediator = X ~ M2, M1 ~ M2, M2 ~ Y			
 
 	# X ~ M2
-	EMPATHY ~ c3*NVB + d3*VB
+	Emp ~ c4*Nonv + d4*Verb
 
 	# M1 ~ M2
-	EMPATHY ~ g*EMO + h*INTENTION
+	Emp ~ h*Emo + i*Inten + j*Malf
 
 	# M2 ~ Y
-	DONATE ~ i*EMPATHY
+	Behav ~ k*Emp
 
 
 	# indirect effect
-  
-	# XtoM1 * M1toM2
-	NVBtoEMOtoEMPATHY := c1*g
-	VBtoEMOtoEMPATHY := d1*g
-	NVBtoINTENTIONtoEMPATHY := c2*h
-	VBtoINTENTIONtoEMPATHY := d2*h
-  
+	
 	# XtoM1 * M1toY
-	NVBtoEMOtoDONATE := c1*e
-	VBtoEMOtoDONATE := d1*e
-	NVBtoINTENTIONtoDONATE := c2*f
-	VBtoINTENTIONtoDONATE	 := d2*f
-  
+	Nonv2Emo2Behav := c1*e
+	Verb2Emo2Behav := d1*e
+	Nonv2Inten2Behav := c2*f
+	Verb2Inten2Behav := d2*f
+	Nonv2Malf2Behav := c3*g
+	Verb2Malf2Behav := d3*g
+	
+	
 	# XtoM2 * M2toY
-	NVBtoEMPATHYtoDONATE := c3*i
- 	VBtoEMPATHYtoDONATE := d3*i
-  
+	Nonv2Emp2Behav := c4*k
+	Verb2Emp2Behav := d4*k
+		
+	# XtoM1 * M1toM2
+	Nonv2Emo2Emp := c1*h
+	Verb2Emo2Emp := d1*h
+	Nonv2Inten2Emp := c2*i
+	Verb2Inten2Emp := d2*i
+	Nonv2Malf2Emp := c3*j
+	Verb2Malf2Emp := d3*j	
+	
+	
 	# M1toM2 * M2toY
-	EMOtoEMPATHYtoDONATE := g*i
-	INTENTIONtoEMPATHYtoDONATE := h*i
-  
+	Emo2Emp2Behav := h*k
+	Inten2Emp2Behav := i*k
+	Malf2Emp2Behav := j*k
+	
+	
 	# XtoM1 * M1toM2 * M2toY
-	NVBtoEMOtoEMPATHYtoDONATE := c1*g*i
-	VBtoEMOtoEMPATHYtoDONATE := d1*g*i
-	NVBtoINTENTIONtoEMPATHYtoDONATE := c2*h*i
-	VBtoINTENTIONtoEMPATHYtoDONATE := d2*h*i
-  
+	Nonv2Emo2Emp2Behav := c1*h*k
+	Verb2Emo2Emp2Behav := d1*h*k
+	Nonv2Inten2Emp2Behav := c2*i*k
+	Verb2Inten2Emp2Behav := d2*i*k
+	Nonv2Malf2Emp2Behav := c3*j*k
+	Verb2Malf2Emp2Behav := d3*j*k	
+	
 	# total effect = XY + (XM*MY)
-	NVBte := a + c1*e + c2*f + c3*i + c1*g*i + c2*h*i
-	VBte := b + d1*e + d2*f + d3*i + d1*g*i + d2*h*i
+	NonvTE := a + c1*e + c2*f + c3*g + c4*k + c1*h*k + c2*i*k + c3*j*k
+	VerbTE := a + d1*e + d2*f + d3*g + d4*k + d1*h*k + d2*i*k + d3*j*k
 	'
 # without Bootstrap
 fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv=TRUE)
