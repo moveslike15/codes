@@ -3,6 +3,11 @@
 fit <- lm(wtdm ~ nv + vv,data = dataset200913) 
 summary(fit)
 
+
+#설치 및 로드
+install.packages("lavaan")
+library(lavaan)
+
 # two - step mediation
 # hide와 malmisr을 합쳐서 intention 변수로
 # why i tried this model was, by converging hide and malmis, to reduce 2 latent variable to 1 and simplify the hypothesis only about intention. but it failed because lavaan SEM operates only when measuring variables for the same one latent variable have correlation between them.
@@ -87,10 +92,10 @@ sem.model <- '
 	VerbTE := a + d1*e + d2*f + d3*g + d4*k + d1*h*k + d2*i*k + d3*j*k
 	'
 # without Bootstrap
-fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv=TRUE)
+fit.sem <- sem(sem.model, data = dataset200913, std.lv=TRUE)
 
 # bootstrap
-fit.sem <- sem(sem.dvisdonate, data = dataset200913, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
+fit.sem <- sem(sem.model, data = dataset200913, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
 
 # SEM 통계량
 summary(fit.sem, fit.measures=TRUE, standardized = TRUE)
