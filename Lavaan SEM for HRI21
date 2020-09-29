@@ -18,7 +18,7 @@ sem.model <- '
 	Inten=~hid
 	Malf=~malmis
 	Emp=~ecm+ptm+pdm
-	Behav=~wtd1+wtd2+wtdql
+	Behav=~wtd1+wtd2
 
 	#direct effect X ~ Y
 	Behav ~ a*Nonv + b*Verb
