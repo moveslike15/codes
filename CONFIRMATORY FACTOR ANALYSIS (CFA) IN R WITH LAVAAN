@@ -1,9 +1,0 @@
-source: https://stats.idre.ucla.edu/r/seminars/rcfa/
-
-Thankfully for us, we have just the right amount of items to fit a CFA because a three-item one factor CFA is just-identified, meaning it has zero degrees of freedom. Because this model is on the brink of being under-identified, it is a good model for introducing identification, which is the process of ensuring each free parameter in the CFA has a unique solution and making surer the degrees of freedom is at least zero. There are many rules for proper identification, but for the casual analyst identification helps us avoid the following message in lavaan:
-
-  lavaan WARNING:
-    Could not compute standard errors! The information matrix could
-    not be inverted. This may be a symptom that the model is not
-    identified.
-
