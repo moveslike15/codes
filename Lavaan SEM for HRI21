@@ -90,10 +90,10 @@ sem.model <- '
 	# VerbTE := a + d1*e + d2*f + d3*g + d4*k + d1*h*k + d2*i*k + d3*j*k
 	'
 # without Bootstrap
-fit.sem <- sem(sem.model, data = base425, std.lv=TRUE)
+fit.sem <- sem(sem.model, data = sem_lec_lavaan, std.lv=TRUE)
 
 # bootstrap
-fit.sem <- sem(sem.model, data = base425, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
+fit.sem <- sem(sem.model, data = sem_lec_lavaan, std.lv =TRUE, se = "bootstrap", bootstrap = 2000)
 
 # SEM 통계량
 summary(fit.sem, fit.measures=TRUE, standardized = TRUE)
