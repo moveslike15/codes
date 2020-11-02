@@ -26,7 +26,7 @@ summary(cfa_calculation, standardized = TRUE)
 #LV의 Convergent Validity를 나타내는 Average Variance Extracted 계산, >.5 면 인정
 reliability(cfa_calcuation, return.total = TRUE) 
 #lavaan에서 Composite Reliablity를 자동적으로 계산해주는 패키지나 툴은 아직 확인되지 않음 cfa 출력값을 가지고 https://www.thestatisticalmind.com/composite-reliability/ 에서 계산할 수 있음 >.7이면 인정. CR은 Cronbach's a와 유사한 의미를 갖는다. 그러나 SEM에서는 CR을 주로 사용
-
+#AVE와 CR 중 하나만 제시해도 됨
 
 # Drawing Graph
 semPaths(fit2,  whatLabels = "std", style="lisrel", nCharNodes=0, nCharEdges=0, layout="circle2", edge.label.cex = 0.2, nDigits = 3, edge.width = 0.5, sizeMan = 2, sizeLat = 2, sizeInt = 2, sizeMan2 = 2, sizeLat2 = 2, sizeInt2 = 2, asize=1)
