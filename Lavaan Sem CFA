@@ -1,8 +1,9 @@
 install.packages("lavaan")
 install.packages("semPlot")
+install.packages("semTools")
 library(lavaan)
 library(semPlot)
-
+library(semTools)
 
 # 매개효과를 포함하는 SEM 모델을 그대로 넣을 경우 LV 간 covariances가 계산되지 않음
 cfamodel <- '
@@ -18,8 +19,12 @@ cfamodel <- '
 cfa_calculation <- cfa(cfamodel, data = sem_lec_example)
 summary(cfa_calculation, standardized = TRUE)
 
+
 # Latent Variables의 표준화 회귀계수(std.all) (= Factor Loading)와 p-value 확인(모두 유의해야 함)
 # LV 간 Covariances의 표준화 회귀계수(std.all)와 를 확인하면 됨
+
+
+reliability(cfa_calcuation, return.total = TRUE)
 
 
 # Drawing Graph
