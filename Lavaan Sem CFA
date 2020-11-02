@@ -23,8 +23,8 @@ summary(cfa_calculation, standardized = TRUE)
 # Latent Variables의 표준화 회귀계수(std.all) (= Factor Loading)와 p-value 확인(모두 유의해야 함)
 # LV 간 Covariances의 표준화 회귀계수(std.all)와 를 확인하면 됨
 
-#LV의 Convergent Validity를 나타내는 Average Variance Extracted 계산
-reliability(cfa_calcuation, return.total = TRUE)
+#LV의 Convergent Validity를 나타내는 Average Variance Extracted 계산, >.5 면 인정
+reliability(cfa_calcuation, return.total = TRUE) 
 
 
 # Drawing Graph
