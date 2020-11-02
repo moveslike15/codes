@@ -18,7 +18,8 @@ cfamodel <- '
 cfa_calculation <- cfa(cfamodel, data = sem_lec_example)
 summary(cfa_calculation, standardized = TRUE)
 
-# LV 간 Covariances의 표준화 회귀계수(std.all)와 Latent Variables의 표준화 회귀계수(std.all)를 확인하면 됨
+# Latent Variables의 표준화 회귀계수(std.all) (= Factor Loading)와 p-value 확인(모두 유의해야 함)
+# LV 간 Covariances의 표준화 회귀계수(std.all)와 를 확인하면 됨
 
 
 # Drawing Graph
