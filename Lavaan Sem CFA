@@ -32,6 +32,7 @@ Overall: CR > AVE > MSV > ASV
 #LV의 Convergent Validity를 나타내는 Average Variance Extracted 계산, >.5 면 인정
 reliability(cfa_calcuation, return.total = TRUE) 
 
+#MSV, ASV are calculated with the value of Covariance std.all
 
 # Drawing Graph
 semPaths(fit2,  whatLabels = "std", style="lisrel", nCharNodes=0, nCharEdges=0, layout="circle2", edge.label.cex = 0.2, nDigits = 3, edge.width = 0.5, sizeMan = 2, sizeLat = 2, sizeInt = 2, sizeMan2 = 2, sizeLat2 = 2, sizeInt2 = 2, asize=1)
